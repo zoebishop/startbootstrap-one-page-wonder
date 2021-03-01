@@ -1,0 +1,226 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>C2103</title>
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet>
+
+  <!-- Custom styles for this template -->
+  <link href="css/heroic-features.css" rel="stylesheet">
+    <style>
+    #pickStudent {
+        background-color: rgb(33,96,120);
+        color: rgb(215,236,244); 
+        border: 2px solid; 
+        border-color: rgb(215,236,244);
+        padding: 12px 28px;
+        font-size: 28px;
+        transition-duration: 0.4s;
+    }
+    
+    #pickStudent:hover {
+        background-color: rgb(215,236,244);
+        color: rgb(33,96,120);    
+    }
+
+    .center {
+        width: 50%;
+        margin: auto;
+        display: block;
+        font-size: 20px;
+        margin-bottom: 20px;
+        background-color: rgb(33,96,120);
+        color: rgb(215,236,244);
+    }
+
+    .student {
+        text-align:center;
+        border: solid;
+        border-width: 3px;
+        background-color: rgb(33,96,120);
+        color: rgb(215,236,244);
+        margin: auto;
+        width: 40%;
+    }
+    
+    .picked {
+        background: violet;
+    }
+    </style>
+</head>
+
+<body translate="no">
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Soccer Team</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="index.html">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="2110.html">Zoom Tools</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://google.com">Google</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+    <div class="container">
+        <a href="#" data-toggle="popover" title="Popover Header" data-content="Some content inside the popover">Toggle popover</a>
+        <select id="mySelect" onchange="classChange()">
+            <option value="block6.JSON">Block 6</option>
+            <option value="block1.JSON">Block 1</option>
+            <option value="block3.JSON">Block 3</option>
+            <option value="Volvo">Volvo</option>
+        </select>
+        <button id="pickStudent" class='center'>
+            Pick Student
+        </button>
+        <div id="container">
+            ...
+        </div>
+    </div>
+    <script id="rendered-js">
+    console.clear();
+
+    let students = [];
+
+    function makeStudent(username, first, last, gradeLevel) {
+        const student = {};
+        student.username = username;
+        student.first = first;
+        student.last = last;
+        student.gradeLevel = gradeLevel;
+        student.clickcount = 0;
+        student.lasttime = Date.now();
+        student.picked = false;
+        return student;
+    }
+
+    students.push(makeStudent("brodybryant", "Brody", "Bryant", 9));
+    students.push(makeStudent("sophiacheuk", "Sofia", "Cheuk", 9));
+    students.push(makeStudent("natecounts", "Nate", "Counts", 9));
+    students.push(makeStudent("vinsoncurran", "Vinson", "Curran", 9));
+    students.push(makeStudent("laithcutler", "Laith", "Cutler", 9));
+    students.push(makeStudent("evanfrits", "Evan", "Frits", 9));
+    students.push(makeStudent("sophiahume", "Sophia", "Hume", 9));
+    students.push(makeStudent("emmafeng", "Emma", "Feng", 9));
+    students.push(makeStudent("abbykvart", "Abby", "Kvart", 9));
+    students.push(makeStudent("claudialandau", "Claudia", "Landau", 9));
+    students.push(makeStudent("lindenliu", "Linden", "Liu", 9));
+    students.push(makeStudent("alexmcclerybrown", "Alex", "Mccleery Brown", 9));
+    students.push(makeStudent("maxmilios", "Max", "Milios", 9));
+    students.push(makeStudent("sophiamyint", "Sophia", "Myint", 9));
+    students.push(makeStudent("alexolsen", "Alex", "Olsen", 9));
+    students.push(makeStudent("skyepratley", "Skye", "Pratley", 9));
+    students.push(makeStudent("narenselvam", "Naren", "Selvam", 9));
+    students.push(makeStudent("margaustanten", "Margau", "Staten-Lusty", 9));
+    students.push(makeStudent("nandiniyvelayudhandhamra", "Nandiniy", "VelayudhanDhamra", 9));
+    students.push(makeStudent("ryderveterane", "Ryder", "Veterane", 9));
+    students.push(makeStudent("isabelleyu", "Isabelle", "Yu", 9));
+    students.push(makeStudent("asherzamudio", "Asher", "Zamudio", 9));
+
+    //console.log(JSON.stringify(students));
+
+    function importStudents(theFile) {
+        console.log(theFile);
+        fetch(theFile)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                students = data;
+                renderList();
+            });
+
+    }
+
+    importStudents('block3.JSON');
+
+    function pickStudent() {
+        let randomStudentNum = Math.floor(Math.random() * students.length);
+        let student = students[randomStudentNum];
+
+        for (let i = 0; i < students.length; i++) {
+            students[i].picked = false;
+        }
+
+        students[randomStudentNum].picked = true;
+        renderList();
+    }
+
+    let pickButton = document.getElementById("pickStudent");
+    pickButton.addEventListener("click", pickStudent);
+
+    function renderList() {
+        students.sort(function(a, b) {
+            return a.clickcount - b.clickcount;
+        });
+
+        // students.sort(function(a,b){return a.lasttime-b.lasttime})
+
+        content = "";
+        let theStyle = "";
+        for (let i = 0; i < students.length; i++) {
+            if (students[i].picked) {
+                theStyle = 'class="student picked"';
+            } else {
+                theStyle = 'class="student"';
+            }
+            content += `<div ${theStyle} id="${students[i].username}">
+    ${students[i].first} ${students[i].last} ${students[i].clickcount}
+  </div>`;
+        }
+        let element = document.getElementById("container");
+        element.innerHTML = content;
+    }
+
+    renderList();
+
+    function listclick(e) {
+        for (let i = 0; i < students.length; i++) {
+            if (students[i].username == e.target.id) {
+                students[i].clickcount++;
+                students[i].lasttime = Date.now();
+            }
+        }
+        renderList();
+    }
+
+    let renderclick = document.getElementById("container");
+    renderclick.addEventListener("click", listclick);
+
+    function classChange() {
+        var x = document.getElementById("mySelect").value;
+        console.log(x)
+        importStudents(x)
+        //document.getElementById("demo").innerHTML = "You selected: " + x;
+    }
+    </script>
+      <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('[data-toggle="popover"]').popover();
+    });
+    </script>
+</body>
+
+</html>
